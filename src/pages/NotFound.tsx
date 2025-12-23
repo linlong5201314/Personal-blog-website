@@ -1,8 +1,13 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { FaHome, FaArrowLeft } from 'react-icons/fa'
+import { useTheme } from '../contexts/ThemeContext'
 
 const NotFound = () => {
+  const { getInterpolatedColor } = useTheme()
+  const primaryColor = getInterpolatedColor('primary')
+  const primaryLightColor = getInterpolatedColor('primaryLight')
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center">
@@ -20,8 +25,8 @@ const NotFound = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <h1 className="text-3xl font-bold mb-4">页面未找到</h1>
-          <p className="text-gray-400 mb-8 max-w-md mx-auto">
+          <h1 className="text-3xl font-bold mb-4 text-gray-800">页面未找到</h1>
+          <p className="text-gray-600 mb-8 max-w-md mx-auto">
             抱歉，你访问的页面不存在或已被移动。让我们回到正轨吧！
           </p>
 
@@ -30,7 +35,8 @@ const NotFound = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full font-medium flex items-center gap-2"
+                className="px-6 py-3 rounded-full font-medium flex items-center gap-2 text-white transition-all duration-500"
+                style={{ background: `linear-gradient(to right, ${primaryColor}, ${primaryLightColor})` }}
               >
                 <FaHome />
                 返回首页
@@ -38,7 +44,8 @@ const NotFound = () => {
             </Link>
             <button
               onClick={() => window.history.back()}
-              className="px-6 py-3 border border-indigo-500/50 rounded-full font-medium flex items-center gap-2 hover:bg-indigo-500/10 transition-all"
+              className="px-6 py-3 border-2 rounded-full font-medium flex items-center gap-2 hover:bg-gray-50 transition-all duration-500"
+              style={{ borderColor: `${primaryColor}50`, color: primaryColor }}
             >
               <FaArrowLeft />
               返回上页
@@ -61,7 +68,7 @@ const NotFound = () => {
                 repeat: Infinity,
                 delay: i * 0.5,
               }}
-              className="absolute text-4xl opacity-20"
+              className="absolute text-4xl opacity-30"
               style={{
                 left: `${10 + i * 20}%`,
                 top: `${20 + (i % 3) * 25}%`,

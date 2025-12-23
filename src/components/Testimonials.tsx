@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { FaQuoteLeft, FaLightbulb } from 'react-icons/fa'
 import GlowingCard from './GlowingCard'
+import { useTheme } from '../contexts/ThemeContext'
 
 const learningHighlights = [
   {
@@ -28,6 +29,9 @@ const selfEvaluation = [
 ]
 
 const Testimonials = () => {
+  const { getInterpolatedColor } = useTheme()
+  const primaryColor = getInterpolatedColor('primary')
+
   return (
     <section className="py-12 md:py-20 px-4">
       <div className="max-w-6xl mx-auto">
@@ -37,14 +41,17 @@ const Testimonials = () => {
           viewport={{ once: true }}
           className="text-center mb-8 md:mb-12"
         >
-          <span className="inline-block px-3 py-1.5 rounded-full glass text-xs md:text-sm text-indigo-400 mb-3">
+          <span 
+            className="inline-block px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-xs md:text-sm mb-3 transition-colors duration-500"
+            style={{ color: primaryColor }}
+          >
             <FaLightbulb className="inline mr-1" />
             学习态度
           </span>
-          <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4">
+          <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-gray-800">
             我的 <span className="gradient-text">学习理念</span>
           </h2>
-          <p className="text-gray-400 text-sm md:text-base max-w-xl mx-auto px-4">
+          <p className="text-gray-600 text-sm md:text-base max-w-xl mx-auto px-4">
             保持积极的学习态度和实践精神
           </p>
         </motion.div>
@@ -61,10 +68,13 @@ const Testimonials = () => {
             >
               <GlowingCard className="h-full">
                 <div className="p-4 md:p-6 relative">
-                  <FaQuoteLeft className="absolute top-4 right-4 text-indigo-500/10 text-2xl md:text-3xl" />
+                  <FaQuoteLeft 
+                    className="absolute top-4 right-4 text-2xl md:text-3xl transition-colors duration-500"
+                    style={{ color: `${primaryColor}15` }}
+                  />
                   <div className="text-3xl md:text-4xl mb-3 md:mb-4">{item.icon}</div>
-                  <h3 className="font-semibold text-base md:text-lg mb-2">{item.title}</h3>
-                  <p className="text-gray-400 text-xs md:text-sm leading-relaxed">
+                  <h3 className="font-semibold text-base md:text-lg mb-2 text-gray-800">{item.title}</h3>
+                  <p className="text-gray-600 text-xs md:text-sm leading-relaxed">
                     {item.content}
                   </p>
                 </div>
@@ -81,7 +91,7 @@ const Testimonials = () => {
         >
           <GlowingCard>
             <div className="p-4 md:p-8">
-              <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6 text-center">自我评价</h3>
+              <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6 text-center text-gray-800">自我评价</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                 {selfEvaluation.map((item, i) => (
                   <motion.div
@@ -90,12 +100,15 @@ const Testimonials = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
-                    className="text-center p-3 md:p-4 bg-dark-300 rounded-xl"
+                    className="text-center p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-100"
                   >
-                    <p className="text-indigo-400 font-medium text-xs md:text-sm mb-1">
+                    <p 
+                      className="font-medium text-xs md:text-sm mb-1 transition-colors duration-500"
+                      style={{ color: primaryColor }}
+                    >
                       {item.label}
                     </p>
-                    <p className="text-gray-400 text-[10px] md:text-xs">{item.value}</p>
+                    <p className="text-gray-600 text-[10px] md:text-xs">{item.value}</p>
                   </motion.div>
                 ))}
               </div>

@@ -10,8 +10,12 @@ import {
 } from 'react-icons/fa'
 import GlowingCard from '../components/GlowingCard'
 import { downloadResume } from '../utils/generateResume'
+import { useTheme } from '../contexts/ThemeContext'
 
 const About = () => {
+  const { getInterpolatedColor } = useTheme()
+  const primaryColor = getInterpolatedColor('primary')
+  const primaryLightColor = getInterpolatedColor('primaryLight')
   const timeline = [
     {
       year: '2024',
@@ -66,48 +70,50 @@ const About = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass rounded-2xl md:rounded-3xl p-5 md:p-12 mb-8 md:mb-12"
+          className="bg-white/80 backdrop-blur-sm rounded-2xl md:rounded-3xl p-5 md:p-12 mb-8 md:mb-12 shadow-lg shadow-gray-200/50 border border-gray-100"
         >
           <div className="md:flex items-start gap-8 md:gap-12">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', delay: 0.2 }}
-              className="w-28 h-28 md:w-40 md:h-40 mx-auto md:mx-0 mb-6 md:mb-0 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-cyan-500 p-1 flex-shrink-0 relative"
+              className="w-28 h-28 md:w-40 md:h-40 mx-auto md:mx-0 mb-6 md:mb-0 rounded-full p-1 flex-shrink-0 relative transition-all duration-500"
+              style={{ background: `linear-gradient(to bottom right, ${primaryColor}, ${primaryLightColor})` }}
             >
-              <div className="w-full h-full rounded-full bg-dark-200 flex items-center justify-center text-4xl md:text-6xl">
+              <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-4xl md:text-6xl">
                 👨‍💻
               </div>
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-2 py-1 bg-green-500 rounded-full text-[10px] md:text-xs font-medium flex items-center gap-1 whitespace-nowrap">
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-2 py-1 bg-green-500 rounded-full text-[10px] md:text-xs font-medium flex items-center gap-1 whitespace-nowrap text-white">
                 <FaBriefcase size={8} />
                 求职中
               </div>
             </motion.div>
             <div className="flex-1 text-center md:text-left">
-              <h1 className="text-2xl md:text-4xl font-bold mb-2">
+              <h1 className="text-2xl md:text-4xl font-bold mb-2 text-gray-800">
                 林龙 <span className="gradient-text text-xl md:text-2xl">Lin Long</span>
               </h1>
-              <p className="text-indigo-400 text-sm md:text-base mb-4">
+              <p className="text-sm md:text-base mb-4 transition-colors duration-500" style={{ color: primaryColor }}>
                 人工智能技术应用 · 大专在读 · 求职实习
               </p>
-              <p className="text-gray-400 text-sm md:text-base mb-4 leading-relaxed">
+              <p className="text-gray-600 text-sm md:text-base mb-4 leading-relaxed">
                 热爱 AI 技术，专注于深度学习、计算机视觉和数据标注领域。
                 在校期间完成多个 AI 项目，熟练使用多款 AI 编程工具。
               </p>
-              <p className="text-gray-400 text-sm md:text-base mb-6 leading-relaxed">
-                <strong className="text-white">正在寻找 AI 相关实习机会</strong>
+              <p className="text-gray-600 text-sm md:text-base mb-6 leading-relaxed">
+                <strong className="text-gray-800">正在寻找 AI 相关实习机会</strong>
                 ，期待在实践中学习成长。
               </p>
               <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
                 <a
                   href="mailto:m13136064359@163.com"
-                  className="inline-flex items-center justify-center gap-2 px-5 md:px-6 py-2.5 md:py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full font-medium text-sm md:text-base"
+                  className="inline-flex items-center justify-center gap-2 px-5 md:px-6 py-2.5 md:py-3 rounded-full font-medium text-sm md:text-base text-white transition-all duration-500 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                  style={{ background: `linear-gradient(to right, ${primaryColor}, ${primaryLightColor})` }}
                 >
                   <FaEnvelope size={14} /> 联系我
                 </a>
                 <button
                   onClick={downloadResume}
-                  className="inline-flex items-center justify-center gap-2 px-5 md:px-6 py-2.5 md:py-3 glass rounded-full font-medium text-sm md:text-base hover:bg-white/10 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-5 md:px-6 py-2.5 md:py-3 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full font-medium text-sm md:text-base text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   <FaDownload size={14} /> 下载简历
                 </button>
@@ -125,22 +131,22 @@ const About = () => {
         >
           <GlowingCard>
             <div className="p-4 md:p-8">
-              <h2 className="text-lg md:text-xl font-bold mb-4 md:mb-6 flex items-center gap-2">
-                <FaBriefcase className="text-green-400" />
+              <h2 className="text-lg md:text-xl font-bold mb-4 md:mb-6 flex items-center gap-2 text-gray-800">
+                <FaBriefcase className="text-green-500" />
                 求职意向
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-                <div className="bg-dark-300 rounded-xl p-3 md:p-4 text-center">
+                <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center border border-gray-100">
                   <p className="text-gray-500 text-xs md:text-sm mb-1">期望岗位</p>
-                  <p className="font-medium text-sm md:text-base">AI开发实习生</p>
+                  <p className="font-medium text-sm md:text-base text-gray-800">AI开发实习生</p>
                 </div>
-                <div className="bg-dark-300 rounded-xl p-3 md:p-4 text-center">
+                <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center border border-gray-100">
                   <p className="text-gray-500 text-xs md:text-sm mb-1">工作类型</p>
-                  <p className="font-medium text-sm md:text-base">实习</p>
+                  <p className="font-medium text-sm md:text-base text-gray-800">实习</p>
                 </div>
-                <div className="bg-dark-300 rounded-xl p-3 md:p-4 text-center">
+                <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center border border-gray-100">
                   <p className="text-gray-500 text-xs md:text-sm mb-1">联系邮箱</p>
-                  <p className="font-medium text-xs md:text-sm text-indigo-400 break-all">
+                  <p className="font-medium text-xs md:text-sm break-all transition-colors duration-500" style={{ color: primaryColor }}>
                     m13136064359@163.com
                   </p>
                 </div>
@@ -156,7 +162,7 @@ const About = () => {
           viewport={{ once: true }}
           className="mb-8 md:mb-12"
         >
-          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center">
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center text-gray-800">
             个人 <span className="gradient-text">亮点</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
@@ -167,10 +173,10 @@ const About = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="flex items-center gap-2 md:gap-3 p-3 md:p-4 glass rounded-xl"
+                className="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100 shadow-sm"
               >
-                <span className="text-green-400 text-sm">✓</span>
-                <span className="text-gray-300 text-xs md:text-sm">{item}</span>
+                <span className="text-green-500 text-sm">✓</span>
+                <span className="text-gray-700 text-xs md:text-sm">{item}</span>
               </motion.div>
             ))}
           </div>
@@ -183,7 +189,7 @@ const About = () => {
           viewport={{ once: true }}
           className="mb-8 md:mb-16"
         >
-          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-center">
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-center text-gray-800">
             学习 <span className="gradient-text">方向</span>
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
@@ -198,7 +204,7 @@ const About = () => {
                 <GlowingCard className="h-full">
                   <div className="p-4 md:p-6 text-center">
                     <div className="text-3xl md:text-4xl mb-2 md:mb-3">{item.emoji}</div>
-                    <h3 className="font-semibold text-sm md:text-base mb-1">{item.title}</h3>
+                    <h3 className="font-semibold text-sm md:text-base mb-1 text-gray-800">{item.title}</h3>
                     <p className="text-gray-500 text-xs md:text-sm">{item.desc}</p>
                   </div>
                 </GlowingCard>
@@ -214,11 +220,14 @@ const About = () => {
           viewport={{ once: true }}
           className="mb-8 md:mb-16"
         >
-          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-center">
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-center text-gray-800">
             成长 <span className="gradient-text">历程</span>
           </h2>
           <div className="relative">
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-indigo-500 via-purple-500 to-cyan-500" />
+            <div 
+              className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 transition-all duration-500"
+              style={{ background: `linear-gradient(to bottom, ${primaryColor}, ${primaryLightColor})` }}
+            />
 
             {timeline.map((item, i) => {
               const Icon = item.icon
@@ -235,20 +244,29 @@ const About = () => {
                     <GlowingCard>
                       <div className="p-4 md:p-6">
                         <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
-                          <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+                          <div 
+                            className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center transition-all duration-500"
+                            style={{ background: `linear-gradient(to bottom right, ${primaryColor}, ${primaryLightColor})` }}
+                          >
                             <Icon className="text-white text-xs md:text-base" />
                           </div>
-                          <span className="px-2 md:px-3 py-1 text-[10px] md:text-xs rounded-full bg-indigo-500/20 text-indigo-300">
+                          <span 
+                            className="px-2 md:px-3 py-1 text-[10px] md:text-xs rounded-full transition-colors duration-500"
+                            style={{ backgroundColor: `${primaryColor}20`, color: primaryColor }}
+                          >
                             {item.year}
                           </span>
                         </div>
-                        <h3 className="font-semibold text-sm md:text-lg mb-1">{item.title}</h3>
-                        <p className="text-indigo-400 text-xs md:text-sm mb-1">{item.org}</p>
-                        <p className="text-gray-400 text-xs md:text-sm">{item.desc}</p>
+                        <h3 className="font-semibold text-sm md:text-lg mb-1 text-gray-800">{item.title}</h3>
+                        <p className="text-xs md:text-sm mb-1 transition-colors duration-500" style={{ color: primaryColor }}>{item.org}</p>
+                        <p className="text-gray-600 text-xs md:text-sm">{item.desc}</p>
                       </div>
                     </GlowingCard>
                   </div>
-                  <div className="absolute left-4 md:left-1/2 w-3 h-3 md:w-4 md:h-4 -translate-x-1/2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 border-2 md:border-4 border-dark-200 z-10" />
+                  <div 
+                    className="absolute left-4 md:left-1/2 w-3 h-3 md:w-4 md:h-4 -translate-x-1/2 rounded-full border-2 md:border-4 border-white z-10 transition-all duration-500"
+                    style={{ background: `linear-gradient(to right, ${primaryColor}, ${primaryLightColor})` }}
+                  />
                 </motion.div>
               )
             })}
@@ -260,9 +278,9 @@ const About = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="glass rounded-2xl md:rounded-3xl p-5 md:p-8 text-center"
+          className="bg-white/80 backdrop-blur-sm rounded-2xl md:rounded-3xl p-5 md:p-8 text-center shadow-lg shadow-gray-200/50 border border-gray-100"
         >
-          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gray-800">
             <FaHeart className="inline text-red-500 mr-2" size={18} />
             关于我
           </h2>
@@ -280,7 +298,7 @@ const About = () => {
               </div>
             ))}
           </div>
-          <p className="text-gray-400 text-xs md:text-sm max-w-2xl mx-auto">
+          <p className="text-gray-600 text-xs md:text-sm max-w-2xl mx-auto">
             虽然还没有正式工作经验，但我一直通过项目实践提升自己。
             期待获得实习机会，在实际工作中学习成长！
           </p>

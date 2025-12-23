@@ -2,22 +2,26 @@ import { motion } from 'framer-motion'
 import { FaEnvelope, FaGithub, FaMapMarkerAlt, FaCalendarAlt, FaBriefcase } from 'react-icons/fa'
 import ContactForm from '../components/ContactForm'
 import GlowingCard from '../components/GlowingCard'
+import { useTheme } from '../contexts/ThemeContext'
 
 const Contact = () => {
+  const { getInterpolatedColor } = useTheme()
+  const primaryColor = getInterpolatedColor('primary')
+  const primaryLightColor = getInterpolatedColor('primaryLight')
   const contactInfo = [
     {
       icon: FaEnvelope,
       label: '邮箱',
       value: 'm13136064359@163.com',
       href: 'mailto:m13136064359@163.com',
-      color: 'from-red-500 to-pink-500',
+      color: `linear-gradient(to bottom right, ${primaryColor}, ${primaryLightColor})`,
     },
     {
       icon: FaGithub,
       label: 'GitHub',
       value: '查看我的代码',
       href: 'https://github.com',
-      color: 'from-gray-600 to-gray-800',
+      color: 'linear-gradient(to bottom right, #374151, #1f2937)',
     },
   ]
 
@@ -48,14 +52,14 @@ const Contact = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8 md:mb-12"
         >
-          <span className="inline-block px-3 py-1.5 rounded-full glass text-xs md:text-sm text-green-400 mb-3">
+          <span className="inline-block px-3 py-1.5 rounded-full bg-green-50 border border-green-200 text-xs md:text-sm text-green-600 mb-3">
             <FaBriefcase className="inline mr-1" size={12} />
             正在寻找实习机会
           </span>
-          <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-4">
+          <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-4 text-gray-800">
             联系 <span className="gradient-text">我</span>
           </h1>
-          <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto px-2">
+          <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto px-2">
             如果你有实习机会或想技术交流，欢迎联系我！
           </p>
         </motion.div>
@@ -69,26 +73,26 @@ const Contact = () => {
         >
           <GlowingCard>
             <div className="p-4 md:p-8">
-              <h2 className="text-lg md:text-xl font-bold mb-4 md:mb-6 flex items-center gap-2">
-                <FaBriefcase className="text-green-400" />
+              <h2 className="text-lg md:text-xl font-bold mb-4 md:mb-6 flex items-center gap-2 text-gray-800">
+                <FaBriefcase className="text-green-500" />
                 求职意向
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                <div className="bg-dark-300 rounded-xl p-3 md:p-4 text-center">
+                <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center border border-gray-100">
                   <p className="text-gray-500 text-xs md:text-sm mb-1">期望岗位</p>
-                  <p className="font-medium text-xs md:text-sm">AI开发实习生</p>
+                  <p className="font-medium text-xs md:text-sm text-gray-800">AI开发实习生</p>
                 </div>
-                <div className="bg-dark-300 rounded-xl p-3 md:p-4 text-center">
+                <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center border border-gray-100">
                   <p className="text-gray-500 text-xs md:text-sm mb-1">其他意向</p>
-                  <p className="font-medium text-xs md:text-sm">数据标注工程师</p>
+                  <p className="font-medium text-xs md:text-sm text-gray-800">数据标注工程师</p>
                 </div>
-                <div className="bg-dark-300 rounded-xl p-3 md:p-4 text-center">
+                <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center border border-gray-100">
                   <p className="text-gray-500 text-xs md:text-sm mb-1">工作类型</p>
-                  <p className="font-medium text-xs md:text-sm">实习</p>
+                  <p className="font-medium text-xs md:text-sm text-gray-800">实习</p>
                 </div>
-                <div className="bg-dark-300 rounded-xl p-3 md:p-4 text-center">
+                <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center border border-gray-100">
                   <p className="text-gray-500 text-xs md:text-sm mb-1">工作方式</p>
-                  <p className="font-medium text-xs md:text-sm">远程/线下均可</p>
+                  <p className="font-medium text-xs md:text-sm text-gray-800">远程/线下均可</p>
                 </div>
               </div>
             </div>
@@ -107,7 +111,7 @@ const Contact = () => {
             >
               <GlowingCard>
                 <div className="p-4 md:p-6">
-                  <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6">联系方式</h3>
+                  <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6 text-gray-800">联系方式</h3>
                   <div className="space-y-3 md:space-y-4">
                     {contactInfo.map((item, i) => (
                       <motion.a
@@ -118,16 +122,17 @@ const Contact = () => {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 }}
-                        className="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl bg-dark-300 hover:bg-dark-200 transition-colors group"
+                        className="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group border border-gray-100"
                       >
                         <div
-                          className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center`}
+                          className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center"
+                          style={{ background: item.color }}
                         >
                           <item.icon className="text-white text-base md:text-xl" />
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="text-xs md:text-sm text-gray-500">{item.label}</p>
-                          <p className="font-medium text-sm md:text-base group-hover:text-indigo-400 transition-colors truncate">
+                          <p className="font-medium text-sm md:text-base text-gray-800 group-hover:opacity-80 transition-colors truncate">
                             {item.value}
                           </p>
                         </div>
@@ -146,15 +151,15 @@ const Contact = () => {
               <GlowingCard>
                 <div className="p-4 md:p-6">
                   <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                    <FaMapMarkerAlt className="text-indigo-400" size={14} />
-                    <span className="text-gray-400 text-sm md:text-base">中国</span>
+                    <FaMapMarkerAlt className="transition-colors duration-500" style={{ color: primaryColor }} size={14} />
+                    <span className="text-gray-600 text-sm md:text-base">中国</span>
                   </div>
                   <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-                    <FaCalendarAlt className="text-indigo-400" size={14} />
-                    <span className="text-gray-400 text-sm md:text-base">通常 24 小时内回复</span>
+                    <FaCalendarAlt className="transition-colors duration-500" style={{ color: primaryColor }} size={14} />
+                    <span className="text-gray-600 text-sm md:text-base">通常 24 小时内回复</span>
                   </div>
-                  <div className="p-3 md:p-4 bg-green-500/10 rounded-xl border border-green-500/20">
-                    <p className="text-green-400 text-xs md:text-sm">
+                  <div className="p-3 md:p-4 bg-green-50 rounded-xl border border-green-200">
+                    <p className="text-green-600 text-xs md:text-sm">
                       💼 正在积极寻找实习机会，欢迎联系！
                     </p>
                   </div>
@@ -170,7 +175,7 @@ const Contact = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-xl md:text-2xl font-bold text-center mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-center mb-6 md:mb-8 text-gray-800">
             常见 <span className="gradient-text">问题</span>
           </h2>
           <div className="grid md:grid-cols-2 gap-4 md:gap-6">
@@ -184,10 +189,10 @@ const Contact = () => {
               >
                 <GlowingCard>
                   <div className="p-4 md:p-6">
-                    <h4 className="font-semibold text-sm md:text-base mb-2 text-indigo-400">
+                    <h4 className="font-semibold text-sm md:text-base mb-2 transition-colors duration-500" style={{ color: primaryColor }}>
                       {faq.q}
                     </h4>
-                    <p className="text-gray-400 text-xs md:text-sm">{faq.a}</p>
+                    <p className="text-gray-600 text-xs md:text-sm">{faq.a}</p>
                   </div>
                 </GlowingCard>
               </motion.div>

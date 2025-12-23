@@ -3,9 +3,12 @@ import { FaGithub, FaExternalLinkAlt, FaArrowRight } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import GlowingCard from './GlowingCard'
 import { projects } from '../data/projects'
+import { useTheme } from '../contexts/ThemeContext'
 
 const ProjectsShowcase = () => {
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 3)
+  const { getInterpolatedColor } = useTheme()
+  const primaryColor = getInterpolatedColor('primary')
 
   return (
     <section className="py-12 md:py-20 px-4">
@@ -17,17 +20,21 @@ const ProjectsShowcase = () => {
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 md:mb-12 gap-4"
         >
           <div className="text-center sm:text-left">
-            <span className="inline-block px-3 py-1.5 rounded-full glass text-xs md:text-sm text-indigo-400 mb-3">
+            <span 
+              className="inline-block px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-xs md:text-sm mb-3 transition-colors duration-500"
+              style={{ color: primaryColor }}
+            >
               🚀 精选作品
             </span>
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-2">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-2 text-gray-800">
               项目 <span className="gradient-text">展示</span>
             </h2>
-            <p className="text-gray-400 text-sm md:text-base">探索我的 AI 实践项目</p>
+            <p className="text-gray-600 text-sm md:text-base">探索我的 AI 实践项目</p>
           </div>
           <Link
             to="/projects"
-            className="text-indigo-400 flex items-center justify-center sm:justify-start gap-2 hover:gap-3 transition-all text-sm md:text-base"
+            className="flex items-center justify-center sm:justify-start gap-2 hover:gap-3 transition-all text-sm md:text-base"
+            style={{ color: primaryColor }}
           >
             查看全部
             <FaArrowRight className="text-xs" />
@@ -55,7 +62,7 @@ const ProjectsShowcase = () => {
                       {project.github && (
                         <a
                           href={project.github}
-                          className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-dark-300 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+                          className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-800 transition-colors"
                         >
                           <FaGithub size={14} />
                         </a>
@@ -63,7 +70,8 @@ const ProjectsShowcase = () => {
                       {project.demo && (
                         <a
                           href={project.demo}
-                          className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-dark-300 flex items-center justify-center text-gray-400 hover:text-indigo-400 transition-colors"
+                          className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 hover:opacity-80 transition-colors"
+                          style={{ color: primaryColor }}
                         >
                           <FaExternalLinkAlt size={12} />
                         </a>
@@ -72,8 +80,8 @@ const ProjectsShowcase = () => {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-base md:text-xl font-semibold mb-2">{project.title}</h3>
-                  <p className="text-gray-400 text-xs md:text-sm mb-3 md:mb-4 flex-1 line-clamp-2">
+                  <h3 className="text-base md:text-xl font-semibold mb-2 text-gray-800">{project.title}</h3>
+                  <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4 flex-1 line-clamp-2">
                     {project.description}
                   </p>
 
@@ -82,7 +90,12 @@ const ProjectsShowcase = () => {
                     {project.tags.slice(0, 3).map((tag) => (
                       <span
                         key={tag}
-                        className="px-2 py-1 text-[10px] md:text-xs rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20"
+                        className="px-2 py-1 text-[10px] md:text-xs rounded-full border transition-colors duration-500"
+                        style={{ 
+                          backgroundColor: `${primaryColor}10`, 
+                          color: primaryColor,
+                          borderColor: `${primaryColor}20`
+                        }}
                       >
                         {tag}
                       </span>
