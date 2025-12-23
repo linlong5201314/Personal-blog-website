@@ -19,9 +19,14 @@ function App() {
     const shouldReduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
     const isPhoneScreen = window.matchMedia?.("(max-width: 640px)")?.matches;
     const isTabletScreen = window.matchMedia?.("(min-width: 641px) and (max-width: 1024px)")?.matches;
+    const isDesktopLike =
+      window.matchMedia?.("(hover: hover)")?.matches &&
+      window.matchMedia?.("(pointer: fine)")?.matches;
+    const isCoarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches;
 
     if (shouldReduceMotion || isPhoneScreen) return "low";
-    if (isTabletScreen) return "medium";
+    if (isDesktopLike) return "high";
+    if (isTabletScreen || isCoarsePointer) return "medium";
     return "high";
   });
 
@@ -30,9 +35,14 @@ function App() {
       const shouldReduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
       const isPhoneScreen = window.matchMedia?.("(max-width: 640px)")?.matches;
       const isTabletScreen = window.matchMedia?.("(min-width: 641px) and (max-width: 1024px)")?.matches;
+      const isDesktopLike =
+        window.matchMedia?.("(hover: hover)")?.matches &&
+        window.matchMedia?.("(pointer: fine)")?.matches;
+      const isCoarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches;
 
       if (shouldReduceMotion || isPhoneScreen) return "low";
-      if (isTabletScreen) return "medium";
+      if (isDesktopLike) return "high";
+      if (isTabletScreen || isCoarsePointer) return "medium";
       return "high";
     };
 
@@ -41,25 +51,40 @@ function App() {
     const mqReduce = window.matchMedia?.("(prefers-reduced-motion: reduce)");
     const mqSmall = window.matchMedia?.("(max-width: 640px)");
     const mqTablet = window.matchMedia?.("(min-width: 641px) and (max-width: 1024px)");
+    const mqHover = window.matchMedia?.("(hover: hover)");
+    const mqFine = window.matchMedia?.("(pointer: fine)");
+    const mqCoarse = window.matchMedia?.("(pointer: coarse)");
 
     const onChange = () => setEffectsLevel(compute());
 
     mqReduce?.addEventListener?.("change", onChange);
     mqSmall?.addEventListener?.("change", onChange);
     mqTablet?.addEventListener?.("change", onChange);
+    mqHover?.addEventListener?.("change", onChange);
+    mqFine?.addEventListener?.("change", onChange);
+    mqCoarse?.addEventListener?.("change", onChange);
 
     mqReduce?.addListener?.(onChange);
     mqSmall?.addListener?.(onChange);
     mqTablet?.addListener?.(onChange);
+    mqHover?.addListener?.(onChange);
+    mqFine?.addListener?.(onChange);
+    mqCoarse?.addListener?.(onChange);
 
     return () => {
       mqReduce?.removeEventListener?.("change", onChange);
       mqSmall?.removeEventListener?.("change", onChange);
       mqTablet?.removeEventListener?.("change", onChange);
+      mqHover?.removeEventListener?.("change", onChange);
+      mqFine?.removeEventListener?.("change", onChange);
+      mqCoarse?.removeEventListener?.("change", onChange);
 
       mqReduce?.removeListener?.(onChange);
       mqSmall?.removeListener?.(onChange);
       mqTablet?.removeListener?.(onChange);
+      mqHover?.removeListener?.(onChange);
+      mqFine?.removeListener?.(onChange);
+      mqCoarse?.removeListener?.(onChange);
     };
   }, []);
 
