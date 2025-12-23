@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch } from 'react-icons/fa'
+import { useTheme } from '../contexts/ThemeContext'
 
 export interface Project {
   id: string
@@ -27,10 +28,14 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCardProps) => {
+  const { getInterpolatedColor } = useTheme()
+  const primaryColor = getInterpolatedColor('primary')
+  const primaryLightColor = getInterpolatedColor('primaryLight')
+  
   const statusColors = {
-    completed: 'bg-green-500/20 text-green-400',
-    'in-progress': 'bg-yellow-500/20 text-yellow-400',
-    planned: 'bg-blue-500/20 text-blue-400',
+    completed: 'bg-green-500/20 text-green-600',
+    'in-progress': 'bg-yellow-500/20 text-yellow-600',
+    planned: 'bg-blue-500/20 text-blue-600',
   }
 
   const statusLabels = {
@@ -46,9 +51,14 @@ const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCa
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.1 }}
         onClick={onClick}
-        className="glass rounded-2xl overflow-hidden card-hover group cursor-pointer"
+        className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl overflow-hidden card-hover group cursor-pointer shadow-sm hover:shadow-md transition-all duration-300"
       >
-        <div className="h-48 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center relative overflow-hidden">
+        <div 
+          className="h-48 flex items-center justify-center relative overflow-hidden transition-colors duration-500"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${primaryColor}15, ${primaryLightColor}15)` 
+          }}
+        >
           {project.image.startsWith('http') ? (
             <img 
               src={project.image} 
@@ -65,15 +75,27 @@ const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCa
           )}
         </div>
         <div className="p-6">
-          <h3 className="text-xl font-semibold mb-2 group-hover:text-indigo-400 transition-colors">
-            {project.title}
+          <h3 
+            className="text-xl font-semibold mb-2 text-gray-800 group-hover:transition-colors duration-300"
+            style={{ color: undefined }}
+          >
+            <span className="group-hover:text-[var(--theme-primary)] transition-colors duration-300" style={{ '--theme-primary': primaryColor } as React.CSSProperties}>
+              {project.title}
+            </span>
           </h3>
-          <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+          <p className="text-gray-600 text-sm mb-4 line-clamp-2">
             {project.description}
           </p>
           <div className="flex flex-wrap gap-2 mb-4">
             {project.tags.map(tag => (
-              <span key={tag} className="px-3 py-1 text-xs rounded-full bg-indigo-500/20 text-indigo-300">
+              <span 
+                key={tag} 
+                className="px-3 py-1 text-xs rounded-full transition-colors duration-500"
+                style={{ 
+                  backgroundColor: `${primaryColor}15`,
+                  color: primaryColor
+                }}
+              >
                 {tag}
               </span>
             ))}
@@ -96,7 +118,7 @@ const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCa
                 <a
                   href={project.github}
                   onClick={(e) => e.stopPropagation()}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-500 hover:text-gray-800 transition-colors"
                 >
                   <FaGithub size={20} />
                 </a>
@@ -105,7 +127,8 @@ const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCa
                 <a
                   href={project.demo}
                   onClick={(e) => e.stopPropagation()}
-                  className="text-gray-400 hover:text-indigo-400 transition-colors"
+                  className="transition-colors duration-300"
+                  style={{ color: primaryColor }}
                 >
                   <FaExternalLinkAlt size={18} />
                 </a>
@@ -123,10 +146,15 @@ const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCa
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       onClick={onClick}
-      className="glass rounded-2xl p-6 card-hover group cursor-pointer"
+      className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 card-hover group cursor-pointer shadow-sm hover:shadow-md transition-all duration-300"
     >
       <div className="flex items-start gap-4">
-        <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
+        <div 
+          className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center transition-colors duration-500"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${primaryColor}15, ${primaryLightColor}15)` 
+          }}
+        >
           {project.image.startsWith('http') ? (
             <img 
               src={project.image} 
@@ -139,8 +167,13 @@ const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCa
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-semibold group-hover:text-indigo-400 transition-colors">
-              {project.title}
+            <h3 
+              className="text-lg font-semibold text-gray-800 group-hover:transition-colors duration-300"
+              style={{ '--theme-primary': primaryColor } as React.CSSProperties}
+            >
+              <span className="group-hover:text-[var(--theme-primary)] transition-colors duration-300">
+                {project.title}
+              </span>
             </h3>
             {project.status && (
               <span className={`px-2 py-0.5 text-xs rounded-full ${statusColors[project.status]}`}>
@@ -148,12 +181,19 @@ const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCa
               </span>
             )}
           </div>
-          <p className="text-gray-400 text-sm mb-3 line-clamp-2">
+          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
             {project.description}
           </p>
           <div className="flex flex-wrap gap-2 mb-3">
             {project.tags.slice(0, 3).map(tag => (
-              <span key={tag} className="px-2 py-1 text-xs rounded-full bg-indigo-500/20 text-indigo-300">
+              <span 
+                key={tag} 
+                className="px-2 py-1 text-xs rounded-full transition-colors duration-500"
+                style={{ 
+                  backgroundColor: `${primaryColor}15`,
+                  color: primaryColor
+                }}
+              >
                 {tag}
               </span>
             ))}
@@ -163,7 +203,7 @@ const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCa
               <a
                 href={project.github}
                 onClick={(e) => e.stopPropagation()}
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-500 hover:text-gray-800 transition-colors"
               >
                 <FaGithub size={18} />
               </a>
@@ -172,7 +212,8 @@ const ProjectCard = ({ project, index, onClick, variant = 'default' }: ProjectCa
               <a
                 href={project.demo}
                 onClick={(e) => e.stopPropagation()}
-                className="text-gray-400 hover:text-indigo-400 transition-colors"
+                className="transition-colors duration-300"
+                style={{ color: primaryColor }}
               >
                 <FaExternalLinkAlt size={16} />
               </a>

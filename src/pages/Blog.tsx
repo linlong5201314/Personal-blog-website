@@ -4,11 +4,15 @@ import { FaClock, FaArrowRight, FaEye, FaHeart, FaSearch } from 'react-icons/fa'
 import Modal from '../components/Modal'
 import GlowingCard from '../components/GlowingCard'
 import { posts, getCategories, BlogPost } from '../data/posts'
+import { useTheme } from '../contexts/ThemeContext'
 
 const Blog = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null)
   const [selectedCategory, setSelectedCategory] = useState('全部')
   const [searchQuery, setSearchQuery] = useState('')
+  const { getInterpolatedColor } = useTheme()
+  const primaryColor = getInterpolatedColor('primary')
+  const primaryLightColor = getInterpolatedColor('primaryLight')
 
   const categories = ['全部', ...getCategories()]
 
@@ -32,10 +36,10 @@ const Blog = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8 md:mb-12"
         >
-          <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-4">
+          <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-4 text-gray-800">
             技术 <span className="gradient-text">博客</span>
           </h1>
-          <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto px-2">
+          <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto px-2">
             分享 AI 学习心得与技术实践
           </p>
         </motion.div>
@@ -48,13 +52,13 @@ const Blog = () => {
           className="mb-6 md:mb-8"
         >
           <div className="relative max-w-md mx-auto">
-            <FaSearch className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
+            <FaSearch className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="搜索文章..."
-              className="w-full pl-9 md:pl-12 pr-4 py-2.5 md:py-3 rounded-xl bg-dark-300 border border-gray-700 focus:border-indigo-500 focus:outline-none transition-colors text-sm md:text-base"
+              className="w-full pl-9 md:pl-12 pr-4 py-2.5 md:py-3 rounded-xl bg-white/80 backdrop-blur-sm border border-gray-200 focus:border-gray-400 focus:outline-none transition-colors text-sm md:text-base text-gray-800 placeholder-gray-400"
             />
           </div>
         </motion.div>
@@ -70,11 +74,14 @@ const Blog = () => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-medium transition-all ${
+              className={`px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-medium transition-all duration-300 ${
                 selectedCategory === cat
-                  ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white'
-                  : 'glass text-gray-400 hover:text-white'
+                  ? 'text-white'
+                  : 'bg-white/80 backdrop-blur-sm border border-gray-200 text-gray-600 hover:text-gray-800'
               }`}
+              style={selectedCategory === cat ? {
+                background: `linear-gradient(to right, ${primaryColor}, ${primaryLightColor})`
+              } : undefined}
             >
               {cat}
             </button>
@@ -98,22 +105,28 @@ const Blog = () => {
             <GlowingCard className="cursor-pointer">
               <div className="p-4 md:p-6 lg:p-8">
                 <div className="lg:flex gap-6">
-                  <div className="lg:w-2/5 h-40 md:h-48 lg:h-auto bg-gradient-to-br from-indigo-500/30 to-purple-500/30 rounded-xl flex items-center justify-center text-6xl md:text-8xl mb-4 lg:mb-0">
+                  <div 
+                    className="lg:w-2/5 h-40 md:h-48 lg:h-auto rounded-xl flex items-center justify-center text-6xl md:text-8xl mb-4 lg:mb-0 transition-colors duration-500"
+                    style={{ background: `linear-gradient(to bottom right, ${primaryColor}20, ${primaryLightColor}20)` }}
+                  >
                     {featuredPost.emoji}
                   </div>
                   <div className="lg:w-3/5">
                     <div className="flex items-center gap-2 md:gap-4 mb-3 md:mb-4">
-                      <span className="px-2 md:px-3 py-1 text-[10px] md:text-xs rounded-full bg-indigo-500/20 text-indigo-300">
+                      <span 
+                        className="px-2 md:px-3 py-1 text-[10px] md:text-xs rounded-full transition-colors duration-500"
+                        style={{ backgroundColor: `${primaryColor}20`, color: primaryColor }}
+                      >
                         {featuredPost.category}
                       </span>
                       <span className="text-gray-500 text-xs md:text-sm flex items-center gap-1">
                         <FaClock size={10} /> {featuredPost.readTime}
                       </span>
                     </div>
-                    <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-4 hover:text-indigo-400 transition-colors">
+                    <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-4 text-gray-800 hover:opacity-80 transition-colors">
                       {featuredPost.title}
                     </h2>
-                    <p className="text-gray-400 text-sm md:text-base mb-4 md:mb-6 line-clamp-2 md:line-clamp-3">
+                    <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6 line-clamp-2 md:line-clamp-3">
                       {featuredPost.excerpt}
                     </p>
                     <div className="flex items-center justify-between">
@@ -124,7 +137,7 @@ const Blog = () => {
                           </span>
                         ))}
                       </div>
-                      <span className="text-indigo-400 flex items-center gap-1 md:gap-2 text-xs md:text-sm">
+                      <span className="flex items-center gap-1 md:gap-2 text-xs md:text-sm transition-colors duration-500" style={{ color: primaryColor }}>
                         阅读全文 <FaArrowRight size={10} />
                       </span>
                     </div>
@@ -149,20 +162,26 @@ const Blog = () => {
                 onClick={() => setSelectedPost(post)}
               >
                 <GlowingCard className="cursor-pointer h-full">
-                  <div className="h-28 md:h-40 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-t-xl flex items-center justify-center text-4xl md:text-5xl">
+                  <div 
+                    className="h-28 md:h-40 rounded-t-xl flex items-center justify-center text-4xl md:text-5xl transition-colors duration-500"
+                    style={{ background: `linear-gradient(to bottom right, ${primaryColor}15, ${primaryLightColor}15)` }}
+                  >
                     {post.emoji}
                   </div>
                   <div className="p-4 md:p-6">
                     <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
-                      <span className="px-2 py-0.5 text-[10px] md:text-xs rounded-full bg-indigo-500/20 text-indigo-300">
+                      <span 
+                        className="px-2 py-0.5 text-[10px] md:text-xs rounded-full transition-colors duration-500"
+                        style={{ backgroundColor: `${primaryColor}20`, color: primaryColor }}
+                      >
                         {post.category}
                       </span>
                       <span className="text-gray-500 text-[10px] md:text-xs">{post.date}</span>
                     </div>
-                    <h3 className="text-base md:text-lg font-semibold mb-2 hover:text-indigo-400 transition-colors line-clamp-2">
+                    <h3 className="text-base md:text-lg font-semibold mb-2 text-gray-800 hover:opacity-80 transition-colors line-clamp-2">
                       {post.title}
                     </h3>
-                    <p className="text-gray-400 text-xs md:text-sm mb-3 md:mb-4 line-clamp-2">
+                    <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4 line-clamp-2">
                       {post.excerpt}
                     </p>
                     <div className="flex items-center justify-between">
@@ -176,7 +195,7 @@ const Blog = () => {
                           </span>
                         )}
                       </div>
-                      <span className="text-indigo-400 text-xs flex items-center gap-1">
+                      <span className="text-xs flex items-center gap-1 transition-colors duration-500" style={{ color: primaryColor }}>
                         阅读 <FaArrowRight size={10} />
                       </span>
                     </div>
@@ -195,7 +214,8 @@ const Blog = () => {
                 setSelectedCategory('全部')
                 setSearchQuery('')
               }}
-              className="mt-4 text-indigo-400 hover:text-indigo-300 text-sm"
+              className="mt-4 hover:opacity-80 text-sm transition-colors duration-500"
+              style={{ color: primaryColor }}
             >
               清除筛选
             </button>
@@ -211,12 +231,18 @@ const Blog = () => {
       >
         {selectedPost && (
           <div>
-            <div className="h-32 md:h-48 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl flex items-center justify-center text-6xl md:text-8xl mb-4 md:mb-6">
+            <div 
+              className="h-32 md:h-48 rounded-xl flex items-center justify-center text-6xl md:text-8xl mb-4 md:mb-6 transition-colors duration-500"
+              style={{ background: `linear-gradient(to bottom right, ${primaryColor}15, ${primaryLightColor}15)` }}
+            >
               {selectedPost.emoji}
             </div>
 
             <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
-              <span className="px-2 md:px-3 py-1 text-xs md:text-sm rounded-full bg-indigo-500/20 text-indigo-300">
+              <span 
+                className="px-2 md:px-3 py-1 text-xs md:text-sm rounded-full transition-colors duration-500"
+                style={{ backgroundColor: `${primaryColor}20`, color: primaryColor }}
+              >
                 {selectedPost.category}
               </span>
               <span className="text-gray-500 text-xs md:text-sm">{selectedPost.date}</span>
@@ -229,30 +255,30 @@ const Blog = () => {
               {selectedPost.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 md:px-3 py-1 text-xs md:text-sm rounded-full bg-dark-300 text-gray-400"
+                  className="px-2 md:px-3 py-1 text-xs md:text-sm rounded-full bg-gray-100 text-gray-600"
                 >
                   #{tag}
                 </span>
               ))}
             </div>
 
-            <div className="prose prose-invert max-w-none">
-              <p className="text-gray-300 text-sm md:text-lg leading-relaxed mb-4 md:mb-6">
+            <div className="prose max-w-none">
+              <p className="text-gray-700 text-sm md:text-lg leading-relaxed mb-4 md:mb-6">
                 {selectedPost.excerpt}
               </p>
               {selectedPost.content && (
-                <div className="text-gray-400 text-sm md:text-base whitespace-pre-line">
+                <div className="text-gray-600 text-sm md:text-base whitespace-pre-line">
                   {selectedPost.content}
                 </div>
               )}
-              <div className="mt-6 md:mt-8 p-4 md:p-6 bg-dark-300 rounded-xl">
+              <div className="mt-6 md:mt-8 p-4 md:p-6 bg-gray-50 rounded-xl border border-gray-100">
                 <p className="text-gray-500 text-center text-sm">
                   📝 完整文章内容正在编写中...
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-4 md:pt-6 mt-4 md:mt-6 border-t border-gray-700">
+            <div className="flex items-center justify-between pt-4 md:pt-6 mt-4 md:mt-6 border-t border-gray-200">
               <div className="flex items-center gap-3 md:gap-4">
                 {selectedPost.views && (
                   <span className="text-gray-500 flex items-center gap-1 text-xs md:text-sm">
@@ -265,7 +291,7 @@ const Blog = () => {
                   </span>
                 )}
               </div>
-              <button className="flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors text-xs md:text-sm">
+              <button className="flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 transition-colors text-xs md:text-sm">
                 <FaHeart size={12} /> 喜欢
               </button>
             </div>

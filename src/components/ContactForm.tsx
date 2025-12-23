@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FaPaperPlane, FaCheck, FaSpinner } from 'react-icons/fa'
 import GlowingCard from './GlowingCard'
+import { useTheme } from '../contexts/ThemeContext'
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,9 @@ const ContactForm = () => {
   })
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  const { getInterpolatedColor } = useTheme()
+  const primaryColor = getInterpolatedColor('primary')
+  const primaryLightColor = getInterpolatedColor('primaryLight')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -68,11 +72,11 @@ const ContactForm = () => {
     >
       <GlowingCard>
         <form onSubmit={handleSubmit} className="p-4 md:p-8">
-          <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">发送消息</h3>
+          <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gray-800">发送消息</h3>
 
           <div className="grid md:grid-cols-2 gap-3 md:gap-4 mb-3 md:mb-4">
             <div>
-              <label className="block text-xs md:text-sm text-gray-400 mb-1.5 md:mb-2">
+              <label className="block text-xs md:text-sm text-gray-600 mb-1.5 md:mb-2">
                 姓名
               </label>
               <input
@@ -81,12 +85,12 @@ const ContactForm = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-dark-300 border border-gray-700 focus:border-indigo-500 focus:outline-none transition-colors text-sm md:text-base"
+                className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-gray-50 border border-gray-200 focus:border-gray-400 focus:outline-none transition-colors text-sm md:text-base text-gray-800 placeholder-gray-400"
                 placeholder="你的名字"
               />
             </div>
             <div>
-              <label className="block text-xs md:text-sm text-gray-400 mb-1.5 md:mb-2">
+              <label className="block text-xs md:text-sm text-gray-600 mb-1.5 md:mb-2">
                 邮箱
               </label>
               <input
@@ -95,14 +99,14 @@ const ContactForm = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-dark-300 border border-gray-700 focus:border-indigo-500 focus:outline-none transition-colors text-sm md:text-base"
+                className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-gray-50 border border-gray-200 focus:border-gray-400 focus:outline-none transition-colors text-sm md:text-base text-gray-800 placeholder-gray-400"
                 placeholder="your@email.com"
               />
             </div>
           </div>
 
           <div className="mb-3 md:mb-4">
-            <label className="block text-xs md:text-sm text-gray-400 mb-1.5 md:mb-2">
+            <label className="block text-xs md:text-sm text-gray-600 mb-1.5 md:mb-2">
               主题
             </label>
             <select
@@ -110,7 +114,7 @@ const ContactForm = () => {
               value={formData.subject}
               onChange={handleChange}
               required
-              className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-dark-300 border border-gray-700 focus:border-indigo-500 focus:outline-none transition-colors text-sm md:text-base"
+              className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-gray-50 border border-gray-200 focus:border-gray-400 focus:outline-none transition-colors text-sm md:text-base text-gray-800"
             >
               <option value="">选择主题</option>
               <option value="实习机会">实习机会</option>
@@ -121,7 +125,7 @@ const ContactForm = () => {
           </div>
 
           <div className="mb-4 md:mb-6">
-            <label className="block text-xs md:text-sm text-gray-400 mb-1.5 md:mb-2">
+            <label className="block text-xs md:text-sm text-gray-600 mb-1.5 md:mb-2">
               消息
             </label>
             <textarea
@@ -130,13 +134,13 @@ const ContactForm = () => {
               onChange={handleChange}
               required
               rows={4}
-              className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-dark-300 border border-gray-700 focus:border-indigo-500 focus:outline-none transition-colors resize-none text-sm md:text-base"
+              className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-gray-50 border border-gray-200 focus:border-gray-400 focus:outline-none transition-colors resize-none text-sm md:text-base text-gray-800 placeholder-gray-400"
               placeholder="写下你想说的..."
             />
           </div>
 
           {status === 'error' && (
-            <p className="text-red-400 text-sm mb-4">{errorMsg}</p>
+            <p className="text-red-500 text-sm mb-4">{errorMsg}</p>
           )}
 
           <motion.button
@@ -149,8 +153,12 @@ const ContactForm = () => {
                 ? 'bg-green-500 text-white'
                 : status === 'error'
                   ? 'bg-red-500 text-white'
-                  : 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:shadow-lg hover:shadow-indigo-500/30'
+                  : 'text-white hover:shadow-lg'
             }`}
+            style={status === 'idle' || status === 'loading' ? {
+              background: `linear-gradient(to right, ${primaryColor}, ${primaryLightColor})`,
+              boxShadow: status === 'idle' ? `0 10px 25px ${primaryColor}30` : undefined
+            } : undefined}
           >
             {status === 'loading' && <FaSpinner className="animate-spin" size={14} />}
             {status === 'success' && <FaCheck size={14} />}

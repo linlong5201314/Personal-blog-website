@@ -11,6 +11,7 @@ import {
 } from 'react-icons/si'
 import { FaRobot, FaCode, FaEye, FaBrain, FaTags } from 'react-icons/fa'
 import GlowingCard from './GlowingCard'
+import { useTheme } from '../contexts/ThemeContext'
 
 const skillCategories = [
   {
@@ -69,6 +70,9 @@ const courses = [
 ]
 
 const SkillsSection = () => {
+  const { getInterpolatedColor } = useTheme()
+  const primaryColor = getInterpolatedColor('primary')
+
   return (
     <section className="py-12 md:py-20 px-4">
       <div className="max-w-6xl mx-auto">
@@ -78,13 +82,16 @@ const SkillsSection = () => {
           viewport={{ once: true }}
           className="text-center mb-10 md:mb-16"
         >
-          <span className="inline-block px-3 py-1.5 rounded-full glass text-xs md:text-sm text-indigo-400 mb-3">
+          <span 
+            className="inline-block px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-xs md:text-sm mb-3 transition-colors duration-500"
+            style={{ color: primaryColor }}
+          >
             💪 技术能力
           </span>
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 text-gray-800">
             技能 <span className="gradient-text">矩阵</span>
           </h2>
-          <p className="text-gray-400 text-sm md:text-base max-w-xl mx-auto px-4">
+          <p className="text-gray-600 text-sm md:text-base max-w-xl mx-auto px-4">
             在校期间系统学习的技术栈
           </p>
         </motion.div>
@@ -103,11 +110,11 @@ const SkillsSection = () => {
                 <div className="p-4 md:p-6">
                   <div className="flex items-center gap-3 mb-4 md:mb-6">
                     <div
-                      className={`w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gradient-to-br ${category.color} flex items-center justify-center`}
+                      className={`w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg`}
                     >
                       <category.icon className="text-white text-sm md:text-base" />
                     </div>
-                    <h3 className="text-base md:text-lg font-semibold">{category.title}</h3>
+                    <h3 className="text-base md:text-lg font-semibold text-gray-800">{category.title}</h3>
                   </div>
 
                   <div className="space-y-3 md:space-y-4">
@@ -122,11 +129,11 @@ const SkillsSection = () => {
                         <div className="flex items-center justify-between mb-1">
                           <div className="flex items-center gap-2">
                             <skill.icon size={14} style={{ color: skill.color }} />
-                            <span className="text-xs md:text-sm">{skill.name}</span>
+                            <span className="text-xs md:text-sm text-gray-700">{skill.name}</span>
                           </div>
                           <span className="text-xs text-gray-500">{skill.level}%</span>
                         </div>
-                        <div className="h-1.5 md:h-2 bg-dark-300 rounded-full overflow-hidden">
+                        <div className="h-1.5 md:h-2 bg-gray-100 rounded-full overflow-hidden">
                           <motion.div
                             initial={{ width: 0 }}
                             whileInView={{ width: `${skill.level}%` }}
@@ -152,7 +159,7 @@ const SkillsSection = () => {
           viewport={{ once: true }}
           className="mt-8 md:mt-12"
         >
-          <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center">
+          <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center text-gray-800">
             📚 专业课程
           </h3>
           <div className="flex flex-wrap justify-center gap-2 md:gap-3 px-2">
@@ -163,7 +170,7 @@ const SkillsSection = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="px-3 py-1.5 md:px-4 md:py-2 glass rounded-full text-xs md:text-sm text-gray-300"
+                className="px-3 py-1.5 md:px-4 md:py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full text-xs md:text-sm text-gray-700"
               >
                 {course}
               </motion.span>
