@@ -132,7 +132,7 @@ pre {
     box-shadow: var(--shadow-lg);
 }
 
-@media (prefers-reduced-motion: reduce), (pointer: coarse), (max-width: 640px) {
+@media (prefers-reduced-motion: reduce), (max-width: 640px) {
     .glass,
     .glass-strong {
         backdrop-filter: none;

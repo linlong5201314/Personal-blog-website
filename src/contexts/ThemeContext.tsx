@@ -106,9 +106,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPaused, setIsPaused] = useState(() => {
     const shouldReduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-    const isCoarsePointer = window.matchMedia?.('(pointer: coarse)')?.matches;
-    const isSmallScreen = window.matchMedia?.('(max-width: 768px)')?.matches;
-    return Boolean(shouldReduceMotion || isCoarsePointer || isSmallScreen);
+    const isPhoneScreen = window.matchMedia?.('(max-width: 640px)')?.matches;
+    return Boolean(shouldReduceMotion || isPhoneScreen);
   });
 
   const currentColor = COLOR_PALETTE[colorIndex];
@@ -139,10 +138,9 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const shouldReduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-    const isCoarsePointer = window.matchMedia?.('(pointer: coarse)')?.matches;
-    const isSmallScreen = window.matchMedia?.('(max-width: 768px)')?.matches;
+    const isPhoneScreen = window.matchMedia?.('(max-width: 640px)')?.matches;
 
-    if (shouldReduceMotion || isCoarsePointer || isSmallScreen) {
+    if (shouldReduceMotion || isPhoneScreen) {
       setIsPaused(true);
     }
   }, []);
