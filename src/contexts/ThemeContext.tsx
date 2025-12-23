@@ -104,7 +104,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [colorIndex, setColorIndexState] = useState(0);
   const [transitionProgress, setTransitionProgress] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(() => {
+    const shouldReduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    const isCoarsePointer = window.matchMedia?.('(pointer: coarse)')?.matches;
+    const isSmallScreen = window.matchMedia?.('(max-width: 768px)')?.matches;
+    return Boolean(shouldReduceMotion || isCoarsePointer || isSmallScreen);
+  });
 
   const currentColor = COLOR_PALETTE[colorIndex];
   const nextColorIndex = (colorIndex + 1) % COLOR_PALETTE.length;

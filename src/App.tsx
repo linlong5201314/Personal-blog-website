@@ -15,21 +15,25 @@ import NotFound from "./pages/NotFound";
 
 function App() {
   const location = useLocation();
-  const [reduceEffects, setReduceEffects] = useState(false);
+  const [reduceEffects, setReduceEffects] = useState(() => {
+    const shouldReduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const isPhoneScreen = window.matchMedia?.("(max-width: 640px)")?.matches;
+    return Boolean(shouldReduceMotion || isPhoneScreen);
+  });
 
   useEffect(() => {
     const compute = () => {
       const shouldReduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
       const isCoarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches;
-      const isSmallScreen = window.matchMedia?.("(max-width: 768px)")?.matches;
-      return Boolean(shouldReduceMotion || isCoarsePointer || isSmallScreen);
+      const isPhoneScreen = window.matchMedia?.("(max-width: 640px)")?.matches;
+      return Boolean(shouldReduceMotion || (isCoarsePointer && isPhoneScreen) || isPhoneScreen);
     };
 
     setReduceEffects(compute());
 
     const mqReduce = window.matchMedia?.("(prefers-reduced-motion: reduce)");
     const mqCoarse = window.matchMedia?.("(pointer: coarse)");
-    const mqSmall = window.matchMedia?.("(max-width: 768px)");
+    const mqSmall = window.matchMedia?.("(max-width: 640px)");
 
     const onChange = () => setReduceEffects(compute());
 
@@ -60,11 +64,15 @@ function App() {
     <div className="min-h-screen neural-bg relative flex flex-col">
       <CursorEffect />
       {/* Smoke Particle Background */}
-      <SmokeParticleBackground
-        particleCount={reduceEffects ? 24 : 80}
-        parallaxFactor={reduceEffects ? 0 : 0.3}
-        interactive={!reduceEffects}
-      />
+      {reduceEffects ? (
+        <div className="mobile-gradient-bg fixed inset-0 pointer-events-none z-0" />
+      ) : (
+        <SmokeParticleBackground
+          particleCount={80}
+          parallaxFactor={0.3}
+          interactive={true}
+        />
+      )}
       <Navbar />
 
       <main className="relative z-10 flex-1">

@@ -132,6 +132,19 @@ pre {
     box-shadow: var(--shadow-lg);
 }
 
+@media (prefers-reduced-motion: reduce), (pointer: coarse), (max-width: 640px) {
+    .glass,
+    .glass-strong {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .gradient-text,
+    .gradient-text-animated {
+        animation: none;
+    }
+}
+
 /* Gradient text with theme color */
 .gradient-text {
     background: linear-gradient(
@@ -233,6 +246,26 @@ pre {
             315deg,
             color-mix(in srgb, var(--theme-accent) 8%, transparent) 0%,
             transparent 50%
+        ),
+        var(--bg-primary);
+}
+
+.mobile-gradient-bg {
+    background:
+        radial-gradient(
+            ellipse at 15% 20%,
+            color-mix(in srgb, var(--theme-primary) 16%, transparent) 0%,
+            transparent 55%
+        ),
+        radial-gradient(
+            ellipse at 85% 75%,
+            color-mix(in srgb, var(--theme-primary-light) 14%, transparent) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse at 55% 45%,
+            color-mix(in srgb, var(--theme-accent) 10%, transparent) 0%,
+            transparent 65%
         ),
         var(--bg-primary);
 }
