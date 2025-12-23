@@ -254,18 +254,24 @@ pre {
     background:
         radial-gradient(
             ellipse at 15% 20%,
-            color-mix(in srgb, var(--theme-primary) 16%, transparent) 0%,
+            color-mix(in srgb, var(--theme-primary) 28%, transparent) 0%,
             transparent 55%
         ),
         radial-gradient(
             ellipse at 85% 75%,
-            color-mix(in srgb, var(--theme-primary-light) 14%, transparent) 0%,
+            color-mix(in srgb, var(--theme-primary-light) 24%, transparent) 0%,
             transparent 60%
         ),
         radial-gradient(
             ellipse at 55% 45%,
-            color-mix(in srgb, var(--theme-accent) 10%, transparent) 0%,
+            color-mix(in srgb, var(--theme-accent) 18%, transparent) 0%,
             transparent 65%
+        ),
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--theme-primary) 10%, transparent) 0%,
+            transparent 55%,
+            color-mix(in srgb, var(--theme-primary-light) 8%, transparent) 100%
         ),
         var(--bg-primary);
 }
