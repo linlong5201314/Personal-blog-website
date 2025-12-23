@@ -132,45 +132,63 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const pauseCycling = useCallback(() => setIsPaused(true), []);
   const resumeCycling = useCallback(() => setIsPaused(false), []);
 
+  useEffect(() => {
+    const shouldReduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    const isCoarsePointer = window.matchMedia?.('(pointer: coarse)')?.matches;
+    const isSmallScreen = window.matchMedia?.('(max-width: 768px)')?.matches;
+
+    if (shouldReduceMotion || isCoarsePointer || isSmallScreen) {
+      setIsPaused(true);
+    }
+  }, []);
+
   // 颜色循环逻辑
   useEffect(() => {
     if (isPaused) return;
 
-    let animationFrameId: number;
-    let startTime: number | null = null;
-    let cycleStartTime = Date.now();
+    let cycleTimerId: number | undefined;
+    let transitionTimerId: number | undefined;
+    let transitionRafId: number | undefined;
 
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      
-      const elapsed = Date.now() - cycleStartTime;
-      
-      if (elapsed >= COLOR_CYCLE_INTERVAL) {
-        // 开始过渡到下一个颜色
-        cycleStartTime = Date.now();
-        setColorIndexState(prev => (prev + 1) % COLOR_PALETTE.length);
-        setTransitionProgress(0);
-        setIsTransitioning(false);
-      } else if (elapsed >= COLOR_CYCLE_INTERVAL - TRANSITION_DURATION) {
-        // 在过渡期间
-        const transitionElapsed = elapsed - (COLOR_CYCLE_INTERVAL - TRANSITION_DURATION);
-        const progress = Math.min(transitionElapsed / TRANSITION_DURATION, 1);
-        setTransitionProgress(progress);
+    const scheduleCycle = () => {
+      transitionTimerId = window.setTimeout(() => {
         setIsTransitioning(true);
-      } else {
-        setIsTransitioning(false);
-        setTransitionProgress(0);
-      }
 
-      animationFrameId = requestAnimationFrame(animate);
+        const transitionStart = performance.now();
+        let lastUpdate = 0;
+
+        const animateTransition = (now: number) => {
+          if (now - lastUpdate < 33) {
+            transitionRafId = requestAnimationFrame(animateTransition);
+            return;
+          }
+          lastUpdate = now;
+
+          const progress = Math.min((now - transitionStart) / TRANSITION_DURATION, 1);
+          setTransitionProgress(progress);
+
+          if (progress < 1) {
+            transitionRafId = requestAnimationFrame(animateTransition);
+          }
+        };
+
+        transitionRafId = requestAnimationFrame(animateTransition);
+      }, COLOR_CYCLE_INTERVAL - TRANSITION_DURATION);
+
+      cycleTimerId = window.setTimeout(() => {
+        setColorIndexState((prev) => (prev + 1) % COLOR_PALETTE.length);
+        setTransitionProgress(0);
+        setIsTransitioning(false);
+        scheduleCycle();
+      }, COLOR_CYCLE_INTERVAL);
     };
 
-    animationFrameId = requestAnimationFrame(animate);
+    scheduleCycle();
 
     return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
+      if (cycleTimerId) window.clearTimeout(cycleTimerId);
+      if (transitionTimerId) window.clearTimeout(transitionTimerId);
+      if (transitionRafId) cancelAnimationFrame(transitionRafId);
     };
   }, [isPaused]);
 
